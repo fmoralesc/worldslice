@@ -51,4 +51,7 @@
 < 
 
 The '+(...)' format is a shortcut for defining delimiters, the text between
-the parentheses is displayed.
+the parentheses is displayed. 
+
+Note that items without a highlighting group, like '[+(@:)]', don't need to be
+enclosed in brackes: '+(@:)' is equivalent.

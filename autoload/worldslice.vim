@@ -57,11 +57,19 @@ endfunction
 
 let s:statusline=''
 
+function! s:litemize(item)
+    if type(a:item) == type('')
+	return [a:item]
+    else
+	return a:item
+    endif
+endfunction
+
 function! worldslice#build_statusline(config)
     let s:steps = []
-    for step in a:config
+    for step in map(a:config, 's:litemize(v:val)')
 	if len(step) == 1
-	    if step[0] =~ '^+' 
+	    if step[0] =~ '^+'
 		let delim = matchstr(step[0], '(\@<=.*)\@=')
 		call extend(s:steps, ['%#SLDelimiter#'.delim])
 	    else

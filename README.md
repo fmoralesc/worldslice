@@ -30,21 +30,21 @@ detachable module and working out some behavior kinks.
     endfunction
 
     let s:my_worldslice_config = [
-		\ ['+(@:)'],
+		\ '+(@:)',
 		\ ['%{fnamemodify(getcwd(), ":~")}', 'Special'],
-		\ ['+(:)'],
+		\ '+(:)',
 		\ ['%n', 'Number'],
-		\ ['+(:)'],
+		\ '+(:)',
 		\ ["%{expand('%:h')!=''?StatusDir():''}", 'Directory'],
 		\ ["%{expand('%:h')!=''?expand('%:t'):'[unnamed]'}", 'Identifier'],
 		\ ['%m%r', 'Boolean'],
-		\ ['\ %=\'],
+		\ '\ %=\',
 		\ ['%{&fenc}', 'Constant'],
-		\ ['+(:)'],
+		\ '+(:)',
 		\ ['%{&ft}', 'Type'],
-		\ ['+(:)'],
+		\ '+(:)',
 		\ ['%{&fo}', 'Function'],
-		\ ['+(:)'],
+		\ '+(:)',
 		\ ["%{&spell?&spl:''}", 'SpellBad'],
 		\ ['\ %l,%c', 'Number']
 		\ ]
