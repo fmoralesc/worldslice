@@ -65,18 +65,23 @@ function! s:litemize(item)
     endif
 endfunction
 
+" \ 
+function! s:escape(str)
+    return substitute(a:str, '\\\@<! ', '\\ ', 'g')
+endfunction
+
 function! worldslice#build_statusline(config)
     let s:steps = []
     for step in map(a:config, 's:litemize(v:val)')
 	if len(step) == 1
-	    if step[0] =~ '^+'
+	    if step[0] =~ '^+(.*)'
 		let delim = matchstr(step[0], '(\@<=.*)\@=')
 		call extend(s:steps, ['%#SLDelimiter#'.delim])
 	    else
-		call extend(s:steps, [step[0]])
+		call extend(s:steps, [s:escape(step[0])])
 	    endif
         else
-	    call extend(s:steps, ['%#SL'.step[1].'#'.step[0]])
+	    call extend(s:steps, ['%#SL'.step[1].'#'.s:escape(step[0])])
 	endif
     endfor
     let s:statusline = join(s:steps, '')
