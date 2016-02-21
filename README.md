@@ -16,39 +16,39 @@ detachable module and working out some behavior kinks.
   example (it's a modification of my own config).
 
 ~~~ vim
-    function! StatusDir()
-	if &buftype != "nofile"
-	    let d = expand("%:p:~:h")
-	    if d != fnamemodify(getcwd(), ":~")
-		return expand("%:p:.:h").'/'
-	    else
-		return ''
-	    endif
+function! StatusDir()
+    if &buftype != "nofile"
+	let d = expand("%:p:~:h")
+	if d != fnamemodify(getcwd(), ":~")
+	    return expand("%:p:.:h").'/'
 	else
 	    return ''
 	endif
-    endfunction
+    else
+	return ''
+    endif
+endfunction
 
-    let s:my_worldslice_config = [
-		\ '+(@:)',
-		\ ['%{fnamemodify(getcwd(), ":~")}', 'Special'],
-		\ '+(:)',
-		\ ['%n', 'Number'],
-		\ '+(:)',
-		\ ["%{expand('%:h')!=''?StatusDir():''}", 'Directory'],
-		\ ["%{expand('%:h')!=''?expand('%:t'):'[unnamed]'}", 'Identifier'],
-		\ ['%m%r', 'Boolean'],
-		\ '\ %=\',
-		\ ['%{&fenc}', 'Constant'],
-		\ '+(:)',
-		\ ['%{&ft}', 'Type'],
-		\ '+(:)',
-		\ ['%{&fo}', 'Function'],
-		\ '+(:)',
-		\ ["%{&spell?&spl:''}", 'SpellBad'],
-		\ ['\ %l,%c', 'Number']
-		\ ]
-    call worldslice#init(s:my_worldslice_config)
+let s:my_worldslice_config = [
+	    \ '+(@:)',
+	    \ ["%{fnamemodify(getcwd(),':~')}", 'Special'],
+	    \ '+(:)',
+	    \ ['%n', 'Number'],
+	    \ '+(:)',
+	    \ ["%{expand('%:h')!=''?StatusDir():''}", 'Directory'],
+	    \ ["%{expand('%:h')!=''?expand('%:t'):'[unnamed]'}", 'Identifier'],
+	    \ ['%m%r', 'Boolean'],
+	    \ '\ %=\',
+	    \ ['%{&fenc}', 'Constant'],
+	    \ '+(:)',
+	    \ ['%{&ft}', 'Type'],
+	    \ '+(:)',
+	    \ ['%{&fo}', 'Function'],
+	    \ '+(:)',
+	    \ ["%{&spell?&spl:''}", 'SpellBad'],
+	    \ ['\ %l,%c', 'Number']
+	    \ ]
+call worldslice#init(s:my_worldslice_config)
 ~~~
 
 The `+(...)` format is a shortcut for defining delimiters, the text between the
