@@ -12,8 +12,9 @@ detachable module and working out some behavior kinks.
 
 ## USAGE
 
-  Simply pass a list of items to *worldslice#init()*, like in the following
-  example (it's a modification of my own config).
+  Simply create a list of items as `g:worldslice#config` and call
+  `worldslice#init()`, like in the following example (it's a modification of my
+  own config).
 
 ~~~ vim
 function! StatusDir()
@@ -29,7 +30,7 @@ function! StatusDir()
     endif
 endfunction
 
-let s:my_worldslice_config = [
+let g:worldslice#config = [
 	    \ '+(@:)', ["%{fnamemodify(getcwd(),':~')}", 'Special'],
 	    \ '+(:)', ['%n', 'Number'],
 	    \ '+(:)', ["%{expand('%:h')!=''? StatusDir(): ''}", 'Directory'],
@@ -42,8 +43,16 @@ let s:my_worldslice_config = [
 	    \ '+(:)', ["%{&spell?&spl:''}", 'SpellBad'],
 	    \ [' %l,%c', 'Number']
 	    \ ]
-call worldslice#init(s:my_worldslice_config)
+call worldslice#init()
 ~~~
 
 The `+(...)` format is a shortcut for defining delimiters, the text between the
 parentheses is displayed.
+
+You can also create a list and pass it as an argument to `worldslice#init()`
+like in
+
+~~~ vim
+let my_config = [...]
+call worldslice#init(my_config)
+~~~

@@ -99,8 +99,18 @@ function! worldslice#unfocus()
     endif
 endfunction
 
-function! worldslice#init(config)
-    call worldslice#build_statusline(a:config)
+function! worldslice#init(...)
+    if a:0 > 0
+	let l:config = a:1
+    else
+	if exists("g:worldslice#config")
+	    let l:config = g:worldslice#config
+	else
+	    echom "worldslice: no configuration given, will use default statusline"
+	    return
+	endif
+    endif
+    call worldslice#build_statusline(l:config)
     call worldslice#apply_statusline()
     call worldslice#compute_highlights()
     au! ColorScheme * call worldslice#compute_highlights()

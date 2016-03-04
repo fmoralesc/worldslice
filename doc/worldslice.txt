@@ -12,8 +12,9 @@
 
 - USAGE
 
-  Simply pass a list of items to *worldslice#init()*, like in the following
-  example (it's a modification of my own config).
+  You can set *g:worldslice#config* (a list of items) and then run
+  *worldslice#init()*, or pass the config explicitely to the funtion, like
+  in the following example (it's a modification of my own config).
 >
     function! StatusDir()
 	if &buftype != "nofile"
