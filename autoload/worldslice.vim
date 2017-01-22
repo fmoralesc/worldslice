@@ -1,18 +1,41 @@
 "unlet s:slice_highlights
 let s:slice_highlights = [
-	    \ 'Special', 
-	    \ 'Delimiter', 
-	    \ 'Number',
 	    \ 'Boolean',
-	    \ 'Directory', 
-	    \ 'Identifier', 
 	    \ 'Character',
+	    \ 'Conditional',
 	    \ 'Constant',
-	    \ 'Type',
+	    \ 'Define',
+	    \ 'Delimiter',
+	    \ 'DiffAdd',
+	    \ 'DiffChange',
+	    \ 'DiffDelete',
+	    \ 'Directory',
+	    \ 'Exception',
+	    \ 'Float',
 	    \ 'Function',
-	    \ 'SpellBad' ]
+	    \ 'Identifier',
+	    \ 'Include',
+	    \ 'Keyword',
+	    \ 'Label',
+	    \ 'Macro',
+	    \ 'NonText',
+	    \ 'Number',
+	    \ 'Operator',
+	    \ 'Question',
+	    \ 'Repeat',
+	    \ 'Special',
+	    \ 'SpecialChar',
+	    \ 'SpellBad',
+	    \ 'Statement',
+	    \ 'String',
+	    \ 'Tag',
+	    \ 'Title',
+	    \ 'Todo',
+	    \ 'Type',
+	    \ 'Underlined'
+	    \]
 
-function! s:get_highlight_dict(name) 
+function! s:get_highlight_dict(name)
     redir! => l:sl_data_raw
 	exe 'silent hi '. a:name
     redir END
@@ -53,6 +76,7 @@ function! worldslice#compute_highlights()
 	endif
     endfor
     hi! link SLVCS SLDirectory
+    hi! link SLError Error
 endfunction
 
 let s:statusline=''
