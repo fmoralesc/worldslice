@@ -165,6 +165,4 @@ function! worldslice#init(...)
     " tabline
     call worldslice#build_tabline()
     call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
-    au! FocusGained * call worldslice#build_tabline()
-    au! FocusLost * call worldslice#clear_tabline()
 endfunction
