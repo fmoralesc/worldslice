@@ -56,14 +56,14 @@ endfunction
 function! worldslice#compute_highlights()
     hi! StatusLine guibg=#151515 guifg=#ffffff gui=None cterm=None ctermbg=233 ctermfg=15
     let l:sl_highlight = s:get_highlight_dict('StatusLine')
-    if $NVIM_TUI_ENABLE_TRUE_COLOR != 1
-	let l:bg_key = 'ctermbg'
-	let l:fg_key = 'ctermfg'
-	let l:mod_key = 'cterm'
-    elseif $NVIM_TUI_ENABLE_TRUE_COLOR == 1 || has('gui_running') == 1
+    if has('gui_running') || &termguicolors
 	let l:bg_key = 'guibg'
 	let l:fg_key = 'guifg'
 	let l:mod_key = 'gui'
+    else
+	let l:bg_key = 'ctermbg'
+	let l:fg_key = 'ctermfg'
+	let l:mod_key = 'cterm'
     endif
     for group in s:slice_highlights
 	let l:orig_group_highlight = s:get_highlight_dict(group)
@@ -163,6 +163,8 @@ function! worldslice#init(...)
     au! BufEnter * call worldslice#apply_statusline()
     au! BufLeave * call worldslice#unfocus()
     " tabline
-    call worldslice#build_tabline()
-    call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
+    if exists('*dictwatcheradd')
+	call worldslice#build_tabline()
+	call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
+    endif
 endfunction
