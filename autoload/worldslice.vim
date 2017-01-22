@@ -70,6 +70,24 @@ function! s:escape(str)
     return substitute(a:str, '\\\@<! ', '\\ ', 'g')
 endfunction
 
+function! worldslice#add_sigils()
+    let sigils = []
+    if exists('g:worldslice#sigils')
+	for sigil in keys(g:worldslice#sigils)
+	    call add(sigils, g:worldslice#sigils[sigil].'%#TabLine#')
+	endfor
+    endif
+    return join(sigils, '')
+endfunction
+
+function! worldslice#build_tabline()
+    exe 'set tabline=\ %='.worldslice#add_sigils()
+endfunction
+
+function! worldslice#clear_tabline()
+    set tabline=\ %=
+endfunction
+
 function! worldslice#build_statusline(config)
     let s:steps = []
     for step in map(a:config, 's:litemize(v:val)')
@@ -110,10 +128,19 @@ function! worldslice#init(...)
 	    return
 	endif
     endif
+    if !exists("g:worldslice#sigils")
+	let g:worldslice#sigils = {}
+    endif
+    " statusline
     call worldslice#build_statusline(l:config)
     call worldslice#apply_statusline()
     call worldslice#compute_highlights()
     au! ColorScheme * call worldslice#compute_highlights()
     au! BufEnter * call worldslice#apply_statusline()
     au! BufLeave * call worldslice#unfocus()
+    " tabline
+    call worldslice#build_tabline()
+    call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
+    au! FocusGained * call worldslice#build_tabline()
+    au! FocusLost * call worldslice#clear_tabline()
 endfunction
