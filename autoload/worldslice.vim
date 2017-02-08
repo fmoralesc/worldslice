@@ -104,7 +104,7 @@ function! worldslice#add_sigils()
     return join(sigils, '')
 endfunction
 
-function! worldslice#build_tabline()
+function! worldslice#build_tabline(...)
     exe 'set tabline=\ %='.worldslice#add_sigils()
 endfunction
 
