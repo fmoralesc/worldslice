@@ -55,6 +55,7 @@ endfunction
 
 function! worldslice#compute_highlights()
     hi! StatusLine guibg=#151515 guifg=#ffffff gui=None cterm=None ctermbg=233 ctermfg=15
+    hi! TabLine guibg=#151515 guifg=#ffffff gui=None cterm=None ctermbg=233 ctermfg=15
     let l:sl_highlight = s:get_highlight_dict('StatusLine')
     if has('gui_running') || &termguicolors
 	let l:bg_key = 'guibg'
@@ -77,6 +78,7 @@ function! worldslice#compute_highlights()
     endfor
     hi! link SLVCS SLDirectory
     hi! link SLError Error
+    hi! link TabLineFill TabLine
 endfunction
 
 let s:statusline=''
