@@ -98,7 +98,12 @@ function! worldslice#add_sigils()
     let sigils = []
     if exists('g:worldslice#sigils')
 	for sigil in keys(g:worldslice#sigils)
-	    call add(sigils, g:worldslice#sigils[sigil].'%#TabLine#')
+	    let inner = g:worldslice#sigils[sigil]
+	    if type(inner) == type('')
+		call add(sigils, inner.'%#TabLine#')
+	    elseif type(inner) == type([])
+		call add(sigils, '%#SL'.inner[1].'#'.inner[0].'%#TabLine#')
+	    endif
 	endfor
     endif
     return join(sigils, '')

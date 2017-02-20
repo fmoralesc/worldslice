@@ -77,9 +77,18 @@ call remove(g:worldslice#sigils, 'my_sigil')
 ```
 
 Sigils always restore the tabline background color, so to colorize one you can
-simply specify the highlighting group
+simply specify the highlighting group, either by including it explicitly
 
 ``` vim
-let g:worldslice#sigils.my_sigil = '%#SLBool#x'
+let g:worldslice#sigils.my_sigil = '%#SLBoolean#x'
 
 ```
+
+or using the following variant
+
+``` vim
+let g:worldslice#sigils.my_sigil = ['x', 'Boolean']
+
+```
+
+which might be clearer to understand.
