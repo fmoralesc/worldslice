@@ -163,6 +163,14 @@ function! worldslice#tabline(...)
     return t
 endfunction
 
+function! worldslice#show_tabline(...)
+    if g:worldslice#sigils != {}
+	set showtabline=2
+    else
+	set showtabline&
+    endif
+endfunction
+
 function! worldslice#build_tabline(...)
     set tabline=%!worldslice#tabline()
 endfunction
@@ -225,6 +233,7 @@ function! worldslice#init(...)
     call worldslice#build_tabline()
     if exists('*dictwatcheradd')
 	call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
+	call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#show_tabline')
 	call dictwatcheradd(t:, '*', 'worldslice#build_tabline')
     endif
 endfunction
