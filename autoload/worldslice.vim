@@ -1,4 +1,9 @@
-"unlet s:slice_highlights
+" vim: set fdm=marker :
+" worldslice.vim
+" statusline and tabline configuration
+" + sigils
+
+" Global: {{{1
 let s:slice_highlights = [
 	    \ 'Boolean',
 	    \ 'Character',
@@ -35,6 +40,21 @@ let s:slice_highlights = [
 	    \ 'Underlined'
 	    \]
 
+let s:statusline=''
+
+function! s:litemize(item)
+    if type(a:item) == type('')
+	return [a:item]
+    else
+	return a:item
+    endif
+endfunction
+
+function! s:escape(str)
+    return substitute(a:str, '\\\@<! ', '\\ ', 'g')
+endfunction
+
+" Highlights: {{{1
 function! s:get_highlight_dict(name)
     redir! => l:sl_data_raw
 	exe 'silent hi '. a:name
@@ -86,20 +106,7 @@ function! worldslice#compute_highlights()
     hi! link TabLineFill TabLine
 endfunction
 
-let s:statusline=''
-
-function! s:litemize(item)
-    if type(a:item) == type('')
-	return [a:item]
-    else
-	return a:item
-    endif
-endfunction
-
-" \ 
-function! s:escape(str)
-    return substitute(a:str, '\\\@<! ', '\\ ', 'g')
-endfunction
+" Tabline: {{{1
 
 function! worldslice#add_sigils()
     let sigils = []
@@ -116,13 +123,51 @@ function! worldslice#add_sigils()
     return join(sigils, '')
 endfunction
 
-function! worldslice#build_tabline(...)
-    exe 'set tabline=\ %='.worldslice#add_sigils()
+function! worldslice#tablabel(n)
+    let buflist = tabpagebuflist(a:n)
+    let otherbufs = len(buflist)
+    let winnr = tabpagewinnr(a:n)
+    if gettabvar(a:n, 'name') != ''
+	let b = gettabvar(a:n, 'name')
+	if otherbufs > 1
+	    let otherbufs_lbl = '('.otherbufs.')'
+	else
+	    let otherbufs_lbl = ''
+	endif
+    else
+	let b = bufname(buflist[winnr - 1]).' '
+	if b == ' '
+	    let b = '[unnamed] '
+	endif
+	if otherbufs > 1
+	    let otherbufs_lbl = '(+'.otherbufs-1.')'
+	else
+	    let otherbufs_lbl = ''
+	endif
+    endif
+    return b. otherbufs_lbl. ' '
 endfunction
 
-function! worldslice#clear_tabline()
-    set tabline=\ %=
+function! worldslice#tabline(...)
+    let t = ''
+    for i in range(tabpagenr('$'))
+	if (i + 1) == tabpagenr()
+	    let t .= '%#TabLineSel#'
+	else
+	    let t .= '%#Tabline#'
+	endif
+	let t .= '%' . (i+1) . 'T'
+	let t .= '%{worldslice#tablabel('. (i+1).')}'
+    endfor
+    let t .=  '%T %='.worldslice#add_sigils()
+    return t
 endfunction
+
+function! worldslice#build_tabline(...)
+    set tabline=%!worldslice#tabline()
+endfunction
+
+" Statusline: {{{1
 
 function! worldslice#build_statusline(config)
     let s:steps = []
@@ -153,6 +198,8 @@ function! worldslice#unfocus()
     endif
 endfunction
 
+" Init: {{{1
+
 function! worldslice#init(...)
     if a:0 > 0
 	let l:config = a:1
@@ -163,7 +210,7 @@ function! worldslice#init(...)
 	    echom "worldslice: no configuration given, will use default statusline"
 	    return
 	endif
-    endif
+    endi
     if !exists("g:worldslice#sigils")
 	let g:worldslice#sigils = {}
     endif
@@ -175,8 +222,9 @@ function! worldslice#init(...)
     au! BufEnter * call worldslice#apply_statusline()
     au! BufLeave * call worldslice#unfocus()
     " tabline
+    call worldslice#build_tabline()
     if exists('*dictwatcheradd')
-	call worldslice#build_tabline()
 	call dictwatcheradd(g:worldslice#sigils, '*', 'worldslice#build_tabline')
+	call dictwatcheradd(t:, '*', 'worldslice#build_tabline')
     endif
 endfunction
