@@ -7,7 +7,8 @@ A minimalistic statusline and tabline configuration vim plugin.
 > A 4-dimensional world can be described as a sequence of 3-dimensional
 slices, which are the state of the world at an index t.
 
-This plugin is basically me extracting my statusline configuration into a
+This plugin tries to simplify the configuration of the statusline and
+tabline. This is my way of extracting my statusline configuration into a
 detachable module and working out some behavior kinks.
 
 ## USAGE
@@ -63,7 +64,7 @@ If you are like me, you probably never use vim tabs, relying either on multiple
 vim instances or on finder mechanisms. If this is the case, the tabline could,
 and maybe *should* be (ab)used for different purposes. `worldslice` treats it
 as a marquee for flags, which I like to call *sigils*. Basically, `worldslice`
-keeps a dictionary of sigilss and watches for changes to it using the
+keeps a dictionary of sigils and watches for changes to it using the
 dictionary watcher feature in nvim. Adding a new sigil is easy:
 
 ``` vim
